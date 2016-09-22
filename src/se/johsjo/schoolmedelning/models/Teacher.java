@@ -11,17 +11,9 @@ public class Teacher {
 		this.teacherId = techderId;
 	}
 
-	public String getFirstName() {
-		return firstName;
-	}
-	
-	public String getLastName() {
-		return lastName;
-	}
-	
-	public int getTeacherId() {
-		return teacherId;
-	}
+	public String getFirstName() { return firstName; }
+	public String getLastName() { return lastName; }
+	public int getTeacherId() { return teacherId; }
 	
 }
 

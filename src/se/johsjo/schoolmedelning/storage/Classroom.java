@@ -1,6 +1,6 @@
 package se.johsjo.schoolmedelning.storage;
 
-public class Classroom {
+public final class Classroom {
 	private int classroomNo, numberOfSeats;
 
 	public Classroom(int classroomNr, int numberOfSeats) {
@@ -8,11 +8,6 @@ public class Classroom {
 		this.numberOfSeats = numberOfSeats;
 	}
 
-	public int getClassroomNo() {
-		return classroomNo;
-	}
-
-	public int getNumberOfSeats() {
-		return numberOfSeats;
-	}
+	public int getClassroomNo() { return classroomNo; }
+	public int getNumberOfSeats() { return numberOfSeats; }
 }

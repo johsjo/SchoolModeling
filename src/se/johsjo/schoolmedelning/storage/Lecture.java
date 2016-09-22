@@ -1,6 +1,6 @@
 package se.johsjo.schoolmedelning.storage;
 
-public class Lecture {
+public final class Lecture {
 	private int lectureId, lectureLength;
 	private String topic;
 
@@ -10,15 +10,7 @@ public class Lecture {
 		this.topic = topic;
 	}
 
-	public int getLectureId() {
-		return lectureId;
-	}
-
-	public int getLectureLength() {
-		return lectureLength;
-	}
-
-	public String getTopic() {
-		return topic;
-	}
+	public int getLectureId() { return lectureId; }
+	public int getLectureLength() { return lectureLength; }
+	public String getTopic() { return topic; }
 }

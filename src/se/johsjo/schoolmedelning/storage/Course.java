@@ -4,41 +4,44 @@ import java.util.Arrays;
 
 import se.johsjo.schoolmedelning.models.*;
 
-public class Course {
+public final class Course {
 	private int courseId;
-	public String courseDescription; // mandatory TODO Fetal initialize
-	public Classroom classRoom; // mandatory TODO Fetal initialize
+	private String courseDescription;
+	private Classroom classRoom;
 	private Teacher teacher;
-	private Student[] studentInClass = new Student[1];
-	private Lecture[] lecturesList = new Lecture[1];
+	private Student[] studentInClass = new Student[0];
+	private Lecture[] lecturesList = new Lecture[0];
 
-	public Course(Teacher teacher) {
+	public Course(Teacher teacher, String courseDescription, Classroom classRoom) {
 		this.teacher = teacher;
+		this.courseDescription = courseDescription;
+		this.classRoom = classRoom;
 	}
 
 	public void addLecture(Lecture lecture) {
 		int i = lecturesList.length;
-		lecturesList[i - 1] = lecture;
-		lecturesList = Arrays.copyOf(lecturesList, lecturesList.length + 1);
+		lecturesList = Arrays.copyOf(lecturesList, i + 1);
+		lecturesList[i] = lecture;
 	}
 
-	public void addStudent(String firstName, String lastName, String socialSecurityNo) {
-
+	public Course addStudent(String firstName, String lastName, String socialSecurityNo) {
+		int i = 0;
+		
 		try {
 			Student student = new Student(firstName, lastName, socialSecurityNo);
-			int i = studentInClass.length;
-			studentInClass[i - 1] = student;
 			studentInClass = Arrays.copyOf(studentInClass, studentInClass.length + 1);
-			if (classRoom.getNumberOfSeats() < studentInClass.length - 1) {
-				throw new CourseException();
+			i = studentInClass.length;
+			studentInClass[i - 1] = student;
+			if (classRoom.getNumberOfSeats() < i) {
+				throw new CourseException("Klassrummet är fullt");
 			}
 
 		} catch (WrongSecialSecurityStructureException e) {
-			System.out.println(e);
+			System.err.println(e);
 		} catch (CourseException e) {
-			studentInClass[studentInClass.length - 2].sitting = false;
+			studentInClass[i - 1].setSitting(false);
 		}
-
+		return this;
 	}
 
 	@Override
@@ -46,14 +49,12 @@ public class Course {
 		StringBuilder outPut = new StringBuilder();
 
 		outPut.append("Denna kurs hålls av läraren: " + teacher.getFirstName() + " " + teacher.getLastName());
+		outPut.append("\nKursID: " + courseId);
 		outPut.append("\nKursbeskrivning: " + courseDescription);
 		outPut.append("\nFöljande föreläsningar kommer att hållas:");
 
-		// lectures
+		// Lectures
 		for (Lecture l : lecturesList) {
-			if (l == null) {
-				break;
-			}
 			outPut.append("\n" + l.getTopic() + "\t" + l.getLectureLength() + " minuter");
 		}
 
@@ -61,12 +62,10 @@ public class Course {
 
 		// Students
 		for (Student s : studentInClass) {
-			if (s == null) {
-				break;
-			}
-			outPut.append("\n" + s.getFirstName() + " " + s.getLastName() + " Sittplats: " + s.sitting);
+			outPut.append("\n" + s.getFirstName() + " " + s.getLastName() + " Sittplats: " + s.getSitting());
 		}
 
 		return outPut.toString();
 	}
+	
 }
